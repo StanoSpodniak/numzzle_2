@@ -1,0 +1,41 @@
+.button {
+    width: 60px;
+    height: 60px;
+    padding: 4px;
+    font-size: 36px;
+    border: 2px solid gray;
+    background-color: white;
+    cursor: pointer;
+    z-index: 1000;
+}
+
+.button:hover {
+    border: 2px solid gray;
+}
+
+.button:focus {
+    outline: none;
+}
+
+.inventoryLayout {
+    display: flex;
+    justify-content: center;
+    gap: 160px;
+    margin-top: 160px;
+}
+
+.gridButton {
+    width: 60px;
+    height: 60px;
+    border: 2px solid lightgray;
+    background-color: white;
+    cursor: default;
+}
+
+.gridButton:hover {
+    border: 2px solid lightgray;
+}
+
+.gridButton:focus {
+    outline: none;
+}
