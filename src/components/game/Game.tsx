@@ -1,6 +1,7 @@
 import { useState, useRef, useEffect } from "react";
 import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
 import style from "./game.module.css";
+//Tutorial: https://www.youtube.com/watch?v=XlXT9lhy-4M
 
 const Game = () => {
     const [position, setPosition] = useState({ x: 0, y: 0 });
@@ -14,7 +15,7 @@ const Game = () => {
 
     //jeden useEffect sa pouzije aj na zaciatku pre pociatocne rozmiestnenie cisel
 
-    useEffect(() => {
+    /*useEffect(() => {
         if (layoutRef.current) {
             setLayoutButtonPosition({
                 //myslim, ze toto pocita hodnoty od laveho horneho rohu a draggable pocita hodnoty od stredu
@@ -22,23 +23,23 @@ const Game = () => {
                 y: layoutRef.current.getBoundingClientRect().y,
             });
         }
-    }, [position]);
+    }, [position]);*/
 
     const handleDrag = (e: DraggableEvent, data: DraggableData) => {
         setPosition({ x: data.x, y: data.y });
     };
 
     const handleMouseUp = (e: DraggableEvent, data: DraggableData) => {
-        if (position.x - data.x < layoutButtonPosition.x - data.x) {
+        /*if (position.x - data.x < layoutButtonPosition.x - data.x) {
             setPosition({ x: 0, y: 0 });
         } else {
             setPosition({
                 x: layoutButtonPosition.x,
                 y: layoutButtonPosition.y,
             });
-        }
-        console.log(data.x);
-        console.log(data.y);
+        }*/
+        setPosition({ x: 30, y: 60 });
+        console.log(data);
         console.log(layoutButtonPosition);
     };
 
@@ -55,7 +56,16 @@ const Game = () => {
                 </button>
             </Draggable>
             <div className={style.inventoryLayout}>
-                <button ref={layoutRef} className={style.gridButton}></button>
+                <Draggable
+                    disabled={true}
+                    nodeRef={layoutRef}
+                    position={layoutButtonPosition}
+                >
+                    <button
+                        ref={layoutRef}
+                        className={style.gridButton}
+                    ></button>
+                </Draggable>
                 <button className={style.gridButton}></button>
             </div>
         </div>
