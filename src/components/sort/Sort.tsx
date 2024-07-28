@@ -7,6 +7,7 @@ import style from "./sort.module.css";
 
 // Utility function to shuffle an array - put them to the seperate file
 // Urobit to iste s cislami - nebude ziadne dolne menu, ale na zaciatku budu cisla nahodne usporiadane
+// pri cislach sa nemôže porovnávať array - pri kontrole, lebo môže byť viac riešení správnych - musí sa vypočítať každý príklad
 const shuffleArray = (array: string[]): string[] => {
     const shuffledArray = [...array];
     for (let i = shuffledArray.length - 1; i > 0; i--) {

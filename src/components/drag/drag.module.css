@@ -1,0 +1,10 @@
+.container {
+    position: relative;
+}
+
+.draggable {
+    position: absolute;
+
+    cursor: move;
+    user-select: none;
+}

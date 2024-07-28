@@ -1,10 +1,11 @@
 import "./App.css";
-import Sort from "./components/sort/Sort";
+import Game from "./components/game/Game";
 
 function App() {
     return (
         <>
-            <Sort />
+            <h1>Numzzle</h1>
+            <Game />
         </>
     );
 }

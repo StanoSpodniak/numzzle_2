@@ -1,74 +1,89 @@
-import { useState, useRef, useEffect } from "react";
-import Draggable, { DraggableData, DraggableEvent } from "react-draggable";
+import { useRef, useState } from "react";
 import style from "./game.module.css";
-//Tutorial: https://www.youtube.com/watch?v=XlXT9lhy-4M
 
 const Game = () => {
-    const [position, setPosition] = useState({ x: 0, y: 0 });
-    const draggableRef = useRef<HTMLButtonElement>(null);
+    const [digits, setDigits] = useState([1, 2, 3, 4, 15, 56, 7, 8, 9]);
+    const [operations, setOperations] = useState([
+        "-",
+        "+",
+        "=",
+        "+",
+        "*",
+        "=",
+        "-",
+        "/",
+        "=",
+    ]);
+    const [results, setResults] = useState([
+        "",
+        "",
+        20,
+        "",
+        "",
+        30,
+        "",
+        "",
+        40,
+    ]);
 
-    const [layoutButtonPosition, setLayoutButtonPosition] = useState({
-        x: 0,
-        y: 0,
-    });
-    const layoutRef = useRef<HTMLButtonElement>(null);
+    const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
+    const dragPerson = useRef<number>(0);
+    const draggedOverPerson = useRef<number>(0);
 
-    //jeden useEffect sa pouzije aj na zaciatku pre pociatocne rozmiestnenie cisel
+    function handleDragStart(index: number) {
+        dragPerson.current = index;
+        setDraggingIndex(index);
+    }
 
-    /*useEffect(() => {
-        if (layoutRef.current) {
-            setLayoutButtonPosition({
-                //myslim, ze toto pocita hodnoty od laveho horneho rohu a draggable pocita hodnoty od stredu
-                x: layoutRef.current.getBoundingClientRect().x,
-                y: layoutRef.current.getBoundingClientRect().y,
-            });
-        }
-    }, [position]);*/
+    function handleDragEnter(index: number) {
+        draggedOverPerson.current = index;
+    }
 
-    const handleDrag = (e: DraggableEvent, data: DraggableData) => {
-        setPosition({ x: data.x, y: data.y });
-    };
+    function handleDragEnd() {
+        handleSort();
+        setDraggingIndex(null);
+    }
 
-    const handleMouseUp = (e: DraggableEvent, data: DraggableData) => {
-        /*if (position.x - data.x < layoutButtonPosition.x - data.x) {
-            setPosition({ x: 0, y: 0 });
-        } else {
-            setPosition({
-                x: layoutButtonPosition.x,
-                y: layoutButtonPosition.y,
-            });
-        }*/
-        setPosition({ x: 30, y: 60 });
-        console.log(data);
-        console.log(layoutButtonPosition);
-    };
+    function handleSort() {
+        const digitsClone = [...digits];
+        const temp = digitsClone[dragPerson.current];
+        digitsClone[dragPerson.current] =
+            digitsClone[draggedOverPerson.current];
+        digitsClone[draggedOverPerson.current] = temp;
+        setDigits(digitsClone);
+    }
 
     return (
-        <div>
-            <Draggable
-                nodeRef={draggableRef}
-                position={position}
-                onDrag={handleDrag}
-                onStop={handleMouseUp}
-            >
-                <button ref={draggableRef} className={style.button}>
-                    1
-                </button>
-            </Draggable>
-            <div className={style.inventoryLayout}>
-                <Draggable
-                    disabled={true}
-                    nodeRef={layoutRef}
-                    position={layoutButtonPosition}
-                >
-                    <button
-                        ref={layoutRef}
-                        className={style.gridButton}
-                    ></button>
-                </Draggable>
-                <button className={style.gridButton}></button>
+        <div className={style.mainContainer}>
+            <div className={style.gameContainer}>
+                {digits.map((digit, index) => (
+                    <div className={style.row}>
+                        <div
+                            draggable
+                            onDragStart={() => handleDragStart(index)}
+                            onDragEnter={() => handleDragEnter(index)}
+                            onDragEnd={handleDragEnd}
+                            onDragOver={(e) => e.preventDefault()}
+                            key={index}
+                        >
+                            <button
+                                className={`${style.button} ${
+                                    draggingIndex === index
+                                        ? style.dragging
+                                        : ""
+                                }`}
+                            >
+                                {digit}
+                            </button>
+                        </div>
+                        <p className={style.operator}>{operations[index]}</p>
+                        <p className={style.result}>{results[index]}</p>
+                    </div>
+                ))}
             </div>
+            <button className={style.submitButton}>Check</button>
         </div>
     );
 };
+
 export default Game;
