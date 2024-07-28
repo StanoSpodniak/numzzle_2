@@ -1,19 +1,14 @@
 import { useRef, useState } from "react";
+import { generateOperators, generateRandomNumbers } from "../utils/utils";
 import style from "./game.module.css";
 
 const Game = () => {
-    const [digits, setDigits] = useState([1, 2, 3, 4, 15, 56, 7, 8, 9]);
-    const [operations, setOperations] = useState([
-        "-",
-        "+",
-        "=",
-        "+",
-        "*",
-        "=",
-        "-",
-        "/",
-        "=",
-    ]);
+    //dragging nefunguje na mobile https://phuoc.ng/collection/react-drag-drop/make-an-element-draggable-on-touchscreen-devices/
+    const [operators, setOperators] = useState<string[]>(generateOperators());
+    const [digits, setDigits] = useState<number[]>(
+        generateRandomNumbers(1, 20, operators)
+    );
+
     const [results, setResults] = useState([
         "",
         "",
@@ -76,7 +71,7 @@ const Game = () => {
                                 {digit}
                             </button>
                         </div>
-                        <p className={style.operator}>{operations[index]}</p>
+                        <p className={style.operator}>{operators[index]}</p>
                         <p className={style.result}>{results[index]}</p>
                     </div>
                 ))}
