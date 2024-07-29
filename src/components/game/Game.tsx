@@ -51,49 +51,98 @@ const Game = () => {
     const dragNumber = useRef<number>(0);
     const draggedOverNumber = useRef<number>(0);
 
-    function handleDragStart(index: number) {
+    const handleDragStart = (index: number) => {
         dragNumber.current = index;
         setDraggingIndex(index);
-    }
+    };
 
-    function handleDragEnter(index: number) {
+    const handleDragEnter = (index: number) => {
         draggedOverNumber.current = index;
-    }
+    };
 
-    function handleDragEnd() {
+    const handleDragEnd = () => {
         handleSort();
         setDraggingIndex(null);
-    }
+    };
 
-    function handleSort() {
-        const numsClone = [...nums];
-        const temp = numsClone[dragNumber.current];
-        numsClone[dragNumber.current] = numsClone[draggedOverNumber.current];
-        numsClone[draggedOverNumber.current] = temp;
-        setNums(numsClone);
-    }
+    const handleSort = () => {
+        if (dragNumber.current !== null && draggedOverNumber.current !== null) {
+            const numsClone = [...nums];
+            const temp = numsClone[dragNumber.current];
+            numsClone[dragNumber.current] =
+                numsClone[draggedOverNumber.current];
+            numsClone[draggedOverNumber.current] = temp;
+            setNums(numsClone);
+        }
+    };
+
+    const handleTouchStart = (index: number) => {
+        handleDragStart(index);
+    };
+
+    const handleTouchMove = (event: TouchEvent) => {
+        event.preventDefault();
+        const touch = event.touches[0];
+        const target = document.elementFromPoint(touch.clientX, touch.clientY);
+        if (target) {
+            const targetIndex = parseInt(
+                target.getAttribute("data-index") || "",
+                10
+            );
+            if (!isNaN(targetIndex)) {
+                handleDragEnter(targetIndex);
+            }
+        }
+    };
+
+    const handleTouchEnd = () => {
+        handleDragEnd();
+    };
+
+    useEffect(() => {
+        const touchMoveListener = (event: TouchEvent) => handleTouchMove(event);
+        const touchEndListener = (event: TouchEvent) => handleTouchEnd();
+
+        if (draggingIndex !== null) {
+            document.addEventListener("touchmove", touchMoveListener, {
+                passive: false,
+            });
+            document.addEventListener("touchend", touchEndListener, {
+                passive: false,
+            });
+        } else {
+            document.removeEventListener("touchmove", touchMoveListener);
+            document.removeEventListener("touchend", touchEndListener);
+        }
+
+        return () => {
+            document.removeEventListener("touchmove", touchMoveListener);
+            document.removeEventListener("touchend", touchEndListener);
+        };
+    }, [draggingIndex]);
 
     return (
         <div className={style.mainContainer}>
             <div className={style.gameContainer}>
-                {nums.map((digit, index) => (
-                    <div className={style.section}>
+                {nums.map((num, index) => (
+                    <div key={index} className={style.section}>
                         <div
                             draggable
                             onDragStart={() => handleDragStart(index)}
                             onDragEnter={() => handleDragEnter(index)}
                             onDragEnd={handleDragEnd}
-                            onDragOver={(e) => e.preventDefault()}
-                            key={index}
+                            onTouchStart={() => handleTouchStart(index)}
+                            className={style.draggable}
                         >
                             <button
+                                data-index={index}
                                 className={`${style.button} ${
                                     draggingIndex === index
                                         ? style.dragging
                                         : ""
                                 }`}
                             >
-                                {digit}
+                                {num}
                             </button>
                         </div>
                         <p className={style.operator}>{operators[index]}</p>
