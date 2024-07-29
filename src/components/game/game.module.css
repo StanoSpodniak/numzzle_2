@@ -9,10 +9,10 @@
     display: flex;
     flex-direction: row;
     flex-wrap: wrap;
-    width: 390px;
+    width: 420px;
 }
 
-.row {
+.section {
     width: 130px;
     display: flex;
     align-items: center;
@@ -21,12 +21,14 @@
 
 .operator {
     margin: 0 auto;
-    padding-left: 10px;
     font-size: 36px;
 }
 
+.resultContainer p::first-letter {
+    margin: 0 8px;
+}
+
 .result {
-    padding-left: 10px;
     font-size: 36px;
 }
 

@@ -1,37 +1,63 @@
-import { useRef, useState } from "react";
-import { generateOperators, generateRandomNumbers } from "../utils/utils";
+import { useEffect, useRef, useState } from "react";
 import style from "./game.module.css";
+import { generateProblem, MathProblem } from "../utils/utils";
 
 const Game = () => {
     //dragging nefunguje na mobile https://phuoc.ng/collection/react-drag-drop/make-an-element-draggable-on-touchscreen-devices/
-    const [operators, setOperators] = useState<string[]>(generateOperators());
-    const [digits, setDigits] = useState<number[]>(
-        generateRandomNumbers(1, 20, operators)
-    );
+    const [problems, setProblems] = useState<MathProblem[]>([]);
 
-    const [results, setResults] = useState([
-        "",
-        "",
-        20,
-        "",
-        "",
-        30,
-        "",
-        "",
-        40,
-    ]);
+    const generateThreeProblems = () => {
+        const newProblems = [
+            generateProblem(),
+            generateProblem(),
+            generateProblem(),
+        ];
+        setProblems(newProblems);
+    };
+
+    useEffect(() => {
+        generateThreeProblems();
+    }, []);
+
+    useEffect(() => {
+        const numbers = problems.flatMap((problem) => [
+            problem.num1,
+            problem.num2,
+            problem.num3,
+        ]);
+        //shuffle numbers before setter
+        setNums(numbers);
+
+        const operators = problems.flatMap((problem) => [
+            problem.operator1,
+            problem.operator2,
+            "",
+        ]);
+        setOperators(operators);
+
+        const results = problems.flatMap((problem) => [
+            "",
+            "",
+            "=" + problem.result.toString(),
+        ]);
+        setResults(results);
+    }, [problems]);
+
+    const [nums, setNums] = useState<number[]>([]);
+    const [operators, setOperators] = useState<string[]>([]);
+    const [results, setResults] = useState<string[]>([]);
 
     const [draggingIndex, setDraggingIndex] = useState<number | null>(null);
-    const dragPerson = useRef<number>(0);
-    const draggedOverPerson = useRef<number>(0);
+    const dragNumber = useRef<number>(0);
+    const draggedOverNumber = useRef<number>(0);
 
     function handleDragStart(index: number) {
-        dragPerson.current = index;
+        dragNumber.current = index;
         setDraggingIndex(index);
     }
 
     function handleDragEnter(index: number) {
-        draggedOverPerson.current = index;
+        draggedOverNumber.current = index;
     }
 
     function handleDragEnd() {
@@ -40,19 +66,18 @@ const Game = () => {
     }
 
     function handleSort() {
-        const digitsClone = [...digits];
-        const temp = digitsClone[dragPerson.current];
-        digitsClone[dragPerson.current] =
-            digitsClone[draggedOverPerson.current];
-        digitsClone[draggedOverPerson.current] = temp;
-        setDigits(digitsClone);
+        const numsClone = [...nums];
+        const temp = numsClone[dragNumber.current];
+        numsClone[dragNumber.current] = numsClone[draggedOverNumber.current];
+        numsClone[draggedOverNumber.current] = temp;
+        setNums(numsClone);
     }
 
     return (
         <div className={style.mainContainer}>
             <div className={style.gameContainer}>
-                {digits.map((digit, index) => (
-                    <div className={style.row}>
+                {nums.map((digit, index) => (
+                    <div className={style.section}>
                         <div
                             draggable
                             onDragStart={() => handleDragStart(index)}
@@ -72,7 +97,9 @@ const Game = () => {
                             </button>
                         </div>
                         <p className={style.operator}>{operators[index]}</p>
-                        <p className={style.result}>{results[index]}</p>
+                        <div className={style.resultContainer}>
+                            <p className={style.result}>{results[index]}</p>
+                        </div>
                     </div>
                 ))}
             </div>
