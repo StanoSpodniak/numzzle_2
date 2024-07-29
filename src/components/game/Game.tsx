@@ -101,7 +101,7 @@ const Game = () => {
 
     useEffect(() => {
         const touchMoveListener = (event: TouchEvent) => handleTouchMove(event);
-        const touchEndListener = (event: TouchEvent) => handleTouchEnd();
+        const touchEndListener = () => handleTouchEnd();
 
         if (draggingIndex !== null) {
             document.addEventListener("touchmove", touchMoveListener, {
@@ -119,6 +119,7 @@ const Game = () => {
             document.removeEventListener("touchmove", touchMoveListener);
             document.removeEventListener("touchend", touchEndListener);
         };
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [draggingIndex]);
 
     return (

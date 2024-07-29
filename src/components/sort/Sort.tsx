@@ -29,13 +29,7 @@ const arraysEqual = (arr1: string[], arr2: string[]): boolean => {
 };
 
 const Sort = () => {
-    const [items, setItems] = useState<string[]>([
-        "I",
-        "'m",
-        "going",
-        "to",
-        "work",
-    ]);
+    const [items] = useState<string[]>(["I", "'m", "going", "to", "work"]);
 
     const [exercise, setExercise] = useState<string[]>([]);
     const onSortEnd = (oldIndex: number, newIndex: number) => {

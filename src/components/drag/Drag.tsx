@@ -1,6 +1,3 @@
-import { useRef, useState } from "react";
-import style from "./drag.module.css";
-
 const Drag = () => {
     /*const [{ dx, dy }, setOffset] = useState({
         dx: 0,

@@ -9,13 +9,7 @@ import { useState } from "react";
 
 const Motion = () => {
     const [items, setItems] = useState([1, 2, 3, 4, 5]);
-    const [sentence, setSentence] = useState([
-        "I",
-        "'m",
-        "going",
-        "to",
-        "work",
-    ]);
+    const [sentence] = useState(["I", "'m", "going", "to", "work"]);
 
     return (
         <div className={style.container}>
