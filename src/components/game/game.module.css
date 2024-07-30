@@ -39,17 +39,14 @@
     border: 2px solid #dcdcdc;
     border-radius: 6px;
     background-color: white;
-    cursor: grab;
     z-index: 1000;
-}
-
-.button:hover {
-    background-color: #f5f5f5;
+    cursor: grab;
 }
 
 .button.dragging {
-    cursor: grab; /* Cursor while dragging */
-    background-color: #dcdcdc; /* Optional: Visual feedback for dragging */
+    color: white;
+    opacity: 1;
+    cursor: grab;
 }
 
 .submitButton {

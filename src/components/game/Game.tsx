@@ -3,7 +3,11 @@ import style from "./game.module.css";
 import { generateProblem, MathProblem } from "../utils/utils";
 
 const Game = () => {
+    // cursor issue: https://stackoverflow.com/questions/66233979/change-not-allowed-cursor-on-drag-in-react
+    //Tutorial: https://www.youtube.com/watch?v=pyx3Ps20TOg&list=PLDIXF8nb0VG0I-ZTeS_JAnUQEcsBMde9q
     //dragging nefunguje na mobile https://phuoc.ng/collection/react-drag-drop/make-an-element-draggable-on-touchscreen-devices/
+
+    //pre efekt presúvania urobiť div s border a v ňom presne tak isté veľké button s tou istou border
     const [problems, setProblems] = useState<MathProblem[]>([]);
 
     const generateThreeProblems = () => {
@@ -51,9 +55,15 @@ const Game = () => {
     const dragNumber = useRef<number>(0);
     const draggedOverNumber = useRef<number>(0);
 
+    const [dragging, setDragging] = useState(false);
+
     const handleDragStart = (index: number) => {
         dragNumber.current = index;
         setDraggingIndex(index);
+
+        setTimeout(() => {
+            setDragging(true);
+        }, 0);
     };
 
     const handleDragEnter = (index: number) => {
@@ -63,6 +73,7 @@ const Game = () => {
     const handleDragEnd = () => {
         handleSort();
         setDraggingIndex(null);
+        setDragging(false);
     };
 
     const handleSort = () => {
@@ -138,7 +149,7 @@ const Game = () => {
                             <button
                                 data-index={index}
                                 className={`${style.button} ${
-                                    draggingIndex === index
+                                    draggingIndex === index && dragging
                                         ? style.dragging
                                         : ""
                                 }`}
