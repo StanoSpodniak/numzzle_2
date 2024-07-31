@@ -1,35 +1,20 @@
+import Draggable from "react-draggable";
+
 const Drag = () => {
-    /*const [{ dx, dy }, setOffset] = useState({
-        dx: 0,
-        dy: 0,
-    });
-    const [startPos, setStartPos] = useState({
-        x: 0,
-        y: 0,
-    });
-    const [isMouseDown, setMouseDown] = useState(false);
-
-    const eleRef = useRef<HTMLDivElement>(null);
-
-    const handleMouseDown = (e: React.MouseEvent) => {};
-
-    const handleMouseMove = (e: React.MouseEvent) => {};
-
-    const handleMouseUp = () => {};*/
-
-    return {
-        /*<div className={style.container}>
-            <div
-                className={style.draggable}
-                ref={eleRef}
-                onMouseDown={handleMouseDown}
-                onMouseMove={handleMouseMove}
-                onMouseUp={handleMouseUp}
-            >
-                Drag me
+    return (
+        <Draggable
+            axis="both"
+            handle=".handle"
+            defaultPosition={{ x: 0, y: 0 }}
+            grid={[25, 25]}
+            scale={1}
+        >
+            <div>
+                <div className="handle">Drag from here</div>
+                <div>This readme is really dragging on...</div>
             </div>
-        </div>*/
-    };
+        </Draggable>
+    );
 };
 
 export default Drag;

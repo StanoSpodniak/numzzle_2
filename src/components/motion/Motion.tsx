@@ -15,7 +15,7 @@ const Motion = () => {
         <div className={style.container}>
             <h1>Idem do práce.</h1>
             <Reorder.Group
-                axis="x"
+                axis="y"
                 values={items}
                 onReorder={setItems}
                 className={style.sentence}

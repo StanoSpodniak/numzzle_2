@@ -8,6 +8,8 @@ const Game = () => {
     //dragging nefunguje na mobile https://phuoc.ng/collection/react-drag-drop/make-an-element-draggable-on-touchscreen-devices/
 
     //pre efekt presúvania urobiť div s border a v ňom presne tak isté veľké button s tou istou border
+
+    //skúsiť použiť pohyb zo Sratch component
     const [problems, setProblems] = useState<MathProblem[]>([]);
 
     const generateThreeProblems = () => {
