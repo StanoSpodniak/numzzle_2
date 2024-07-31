@@ -9,7 +9,7 @@ const Game = () => {
 
     //pre efekt presúvania urobiť div s border a v ňom presne tak isté veľké button s tou istou border
 
-    //skúsiť použiť pohyb zo Sratch component
+    //skúsiť použiť pohyb zo Sratch component, Návod: https://github.com/phuocng/react-drag-drop https://phuoc.ng/collection/react-drag-drop/
     const [problems, setProblems] = useState<MathProblem[]>([]);
 
     const generateThreeProblems = () => {
